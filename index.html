@@ -1,106 +1,151 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Soumik Mitra - Portfolio</title>
-  </head>
-  <body>
-    <nav>
-      <a href="#introduction">Introduction</a>
-      <a href="#journey">My Journey</a>
-      <a href="#projects">Projects</a>
-      <a href="#skills">Skills</a>
-      <a href="#contact">Contact</a>
-    </nav>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfolio Website</title>
+</head>
+<body>
+
+    <header id="main-header">
+        <h1>Soumik Mitra</h1>
+        <nav>
+            <ul>
+                <li><a href="#about">About Me</a></li>
+                <li><a href="#projects">Projects</a></li>
+                <li><a href="#blog">Tech Blog</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
 
     <main>
-      <h1 id="introduction">Hello, I'm Soumik Mitra</h1>
-      <p>
-        A passionate technologist who transforms ideas into elegant digital
-        solutions. From web development to DevOps engineering and data analysis,
-        I bridge the gap between code and creativity.
-      </p>
+        <section id="about">
+            <h2>About Me</h2>
+            <p>Welcome to my professional portfolio. I focus on building scalable web applications.</p>
+            
+            <aside class="quick-stats">
+                <h3>Quick Stats</h3>
+                <ul>
+                    <li>Years Experience: 2</li>
+                    <li>Location: South Carolina</li>
+                    <li>Status: Open for work</li>
+                </ul>
+            </aside>
+        </section>
 
-      <section id="journey">
-        <h2>My Journey</h2>
-        <p>
-          My path in technology began with a simple curiosity: how do
-          applications work? That question led me through countless lines of
-          code, late-night debugging sessions, and the thrill of solving complex
-          problems. Today, I wear multiple hats - crafting responsive web
-          experiences, orchestrating cloud infrastructures, and extracting
-          meaningful insights from data.
-        </p>
-        <p>
-          Each project I undertake is a new chapter in my story, where I blend
-          technical expertise with creative problem-solving to deliver solutions
-          that matter.
-        </p>
-      </section>
+        <hr> <section id="projects">
+            <h2>Featured Projects</h2>
+            <p>Here are a few applications I have developed. Notice the consistent structure of every article.</p>
 
-      <article id="projects">
-        <h2>Featured Projects</h2>
+            <article class="project-card">
+                <h3>Project Alpha: E-Commerce Dashboard</h3>
+                <img src="placeholder.jpg" alt="Screenshot of dashboard" width="200">
+                <p><strong>Tech Stack:</strong> React, Node.js, MongoDB</p>
+                <p>A full-stack application handling 10,000+ items. I focused on database normalization and API efficiency.</p>
+                <a href="#">View Code</a>
+            </article>
 
-        <h3>Cloud Migration Platform</h3>
-        <p>
-          Led the DevOps initiative to migrate legacy applications to AWS,
-          reducing infrastructure costs by 40% while improving deployment
-          frequency from monthly to daily releases. Implemented CI/CD pipelines
-          using Jenkins and Docker.
-        </p>
+            <article class="project-card">
+                <h3>Project Beta: Task Manager</h3>
+                <img src="placeholder.jpg" alt="Screenshot of task manager" width="200">
+                <p><strong>Tech Stack:</strong> Python, Django, PostgreSQL</p>
+                <p>A productivity tool for remote teams. Implements real-time socket updates for collaboration.</p>
+                <a href="#">View Code</a>
+            </article>
 
-        <h3>Real-time Analytics Dashboard</h3>
-        <p>
-          Built an interactive data visualization platform that processes
-          millions of events daily, providing business insights in real-time.
-          Technologies: Python, React, PostgreSQL, and Apache Kafka.
-        </p>
+            <article class="project-card">
+                <h3>Project Gamma: Weather API</h3>
+                <img src="placeholder.jpg" alt="Screenshot of weather app" width="200">
+                <p><strong>Tech Stack:</strong> Vanilla JS, OpenWeatherMap API</p>
+                <p>A lightweight front-end application consuming third-party REST APIs to display forecasts.</p>
+                <a href="#">View Code</a>
+            </article>
+        </section>
 
-        <h3>E-commerce Web Application</h3>
-        <p>
-          Developed a full-stack e-commerce solution with secure payment
-          integration, inventory management, and personalized user
-          recommendations. Achieved 99.9% uptime and handled 10,000+ daily
-          transactions.
-        </p>
-      </article>
+        <hr>
 
-      <aside id="skills">
-        <h3>Technical Toolkit</h3>
-        <ul>
-          <li>
-            <strong>Web Development:</strong> HTML, CSS, JavaScript, React,
-            Node.js
-          </li>
-          <li>
-            <strong>DevOps:</strong> Docker, Kubernetes, Jenkins, AWS, Azure
-          </li>
-          <li><strong>Data Analysis:</strong> Python, Pandas, SQL, Tableau</li>
-          <li><strong>Version Control:</strong> Git, GitHub</li>
-          <li><strong>Databases:</strong> PostgreSQL, MongoDB, MySQL</li>
-        </ul>
-      </aside>
+        <section id="blog">
+            <h2>Latest Articles</h2>
+            
+            <div class="blog-layout">
+                <div class="blog-posts">
+                    <article class="blog-post">
+                        <h3>Understanding Semantic HTML</h3>
+                        <small>Posted on Jan 12, 2026</small>
+                        <p>Semantic HTML is the foundation of accessibility and SEO. In this article, we explore why 'div' soup is bad practice...</p>
+                        <a href="#">Read More</a>
+                    </article>
+
+                    <article class="blog-post">
+                        <h3>Why Scalability Matters</h3>
+                        <small>Posted on Jan 05, 2026</small>
+                        <p>When building an application, you must plan for growth. Here is how I structure my databases for future expansion...</p>
+                        <a href="#">Read More</a>
+                    </article>
+                </div>
+
+                <aside class="blog-sidebar">
+                    <h3>Categories</h3>
+                    <ul>
+                        <li><a href="#">Web Dev</a></li>
+                        <li><a href="#">Data Science</a></li>
+                        <li><a href="#">Career</a></li>
+                    </ul>
+                    <h3>Archive</h3>
+                    <ul>
+                        <li><a href="#">2025</a></li>
+                        <li><a href="#">2024</a></li>
+                    </ul>
+                </aside>
+            </div>
+        </section>
+
+        <hr>
+
+        <section id="contact">
+            <h2>Get In Touch</h2>
+            <form action="/submit-form" method="POST">
+                
+                <label for="fname">First Name:</label><br>
+                <input type="text" id="fname" name="fname" required><br><br>
+
+                <label for="email">Email Address:</label><br>
+                <input type="email" id="email" name="email" placeholder="name@example.com" required><br><br>
+
+                <label for="reason">Reason for Contact:</label><br>
+                <select id="reason" name="reason">
+                    <option value="hire">Hiring Inquiry</option>
+                    <option value="collab">Collaboration</option>
+                    <option value="other">Other</option>
+                </select><br><br>
+
+                <fieldset>
+                    <legend>Preferred Contact Method:</legend>
+                    <input type="radio" id="contact-email" name="contact-method" value="email" checked>
+                    <label for="contact-email">Email</label><br>
+                    <input type="radio" id="contact-phone" name="contact-method" value="phone">
+                    <label for="contact-phone">Phone</label>
+                </fieldset><br>
+
+                <label for="message">Message:</label><br>
+                <textarea id="message" name="message" rows="5" cols="30"></textarea><br><br>
+
+                <input type="checkbox" id="subscribe" name="subscribe" value="yes">
+                <label for="subscribe">Subscribe to my newsletter</label><br><br>
+
+                <input type="submit" value="Send Message">
+            </form>
+        </section>
+
     </main>
 
-    <footer id="contact">
-      <h3>Let's Connect</h3>
-      <p>
-        I'm always excited to collaborate on innovative projects or discuss
-        technology. Whether you have a project in mind or just want to chat
-        about the latest in tech, feel free to reach out.
-      </p>
-      <p>Email: soumikdeb2@gmail.com</p>
-      <p>
-        GitHub: <a href="https://github.com/Soumik29">github.com/Soumik29</a>
-      </p>
-      <p>
-        LinkedIn:
-        <a href="https://www.linkedin.com/in/mitra-soumik/"
-          >linkedin.com/in/mitra-soumik</a
-        >
-      </p>
-      <p>&copy; 2026 Soumik Mitra. All rights reserved.</p>
+    <footer>
+        <p>&copy; 2026 Soumik Mitra.</p>
+        <nav>
+            <a href="#">GitHub</a> | <a href="#">LinkedIn</a>
+        </nav>
     </footer>
-  </body>
+
+</body>
 </html>
