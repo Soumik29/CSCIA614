@@ -5,10 +5,11 @@ This is the Master's Level Advanced Web Development Course.
 # Assignment 1
 ---
 ### Part 1:
-- Instruction: Write Several paragraphs analyzing the website based on your inspection.
 
 **Website:** [sive.rs](https://sive.rs/) 
+
 **Author:** Derek Sivers (Founder of CD Baby)
+
 **Tech Stack:** Custom Backend (PostgresSQL + Ruby) -> Renders Pure HTML.
 ---
 
