@@ -5,13 +5,14 @@ This is the Master's Level Advanced Web Development Course.
 # Assignment 1
 ---
 ### Part 1:
+- Instruction: Write Several paragraphs analyzing the website based on your inspection.
 
 **Website:** [sive.rs](https://sive.rs/) 
-
 **Author:** Derek Sivers (Founder of CD Baby)
+**Tech Stack:** Renders Pure HTML.
 
-**Tech Stack:** Custom Backend (PostgresSQL + Ruby) -> Renders Pure HTML.
 ---
+
 
 ### Analysis:
 - Clean Structure and Semantics: Analyzing the source code of Derek Sivers reveals a lot about keeping the portfolio simplistic and minimal design aspect to it. Unlike modern sites that suffers layers of div tags, Sivers' code is flat and readable. He uses standard tags like header, h1, p and article exactly as they were intended.
