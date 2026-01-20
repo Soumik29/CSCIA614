@@ -2,16 +2,24 @@
 
 This is the Master's Level Advanced Web Development Course.
 
-### Justification for Scalability
+# Assignment 1
+---
+### Part 1:
+- Instruction: Write Several paragraphs analyzing the website based on your inspection.
 
-- Modular 'Article' Pattern: In the project section, I used <article> tag for every single project. This makes the site scalable because the structure is identical for Project 1, 2, and 3. If I need to add 50 more projects later, then I don't need to write new HTML structure. I can just feed the data into a article template using a loop in React.
+**Website:** [sive.rs](https://sive.rs/) 
+**Author:** Derek Sivers (Founder of CD Baby)
+**Tech Stack:** Custom Backend (PostgresSQL + Ruby) -> Renders Pure HTML.
+---
 
-- Sectioning: I wrapped major areas of my portfolio in section tags. This ensures that if I add a new feature, like a 'Testimonial' section, I can drop it in as a new block without breaking the flow of the other sections.
+### Analysis:
+- Clean Structure and Semantics: Analyzing the source code of Derek Sivers reveals a lot about keeping the portfolio simplistic and minimal design aspect to it. Unlike modern sites that suffers layers of div tags, Sivers' code is flat and readable. He uses standard tags like header, h1, p and article exactly as they were intended.
 
-### Justification for Maintainability
+There are almost no CSS classes cluttering the HTML. The styling is applied to the tags themselves (e.g., article {width: 600px;}), which keeps HTML source looking like a clean document rather than a software application.
 
-- I avoided using div tags for major areas. Instead I used nav, aside and footer. The reason for this is if a developer were to fix a big 6 months from now they don't have to search through nested divs.
+- Maintainability: Since the site relies heavily on pure HTML and CSS and no Tech heavy framework, it has been ranked exceptionally high for maintainability. By serving simple, static-like HTML, his site is future-proof. 
+If a typo or a bug were to appear in his website it would be really easy to fix because the content isn't buried in a complex JavaScript Framework. 
 
-- In the contact form, I used fieldset and legend to group the radio buttons. This keeps the form accessible and easier to read if we need to add more options later.
+- Scalability: Sivers hosts thousands of book notes, articles, and podcasts transcripts. Because the site has zero client-side JavaScript frameworks, the payload size is tiny (often under 10kb per page.)
 
-- I used aside in the blog section for the 'Categories' and 'Archive' links. This is semantically correct because this content is tangentially related to the main content. 
+- Performance: This means that the site can handle a lot of traffic spikes without crashing or costing any server fees. The browser has to do no work to render the page, making it accessible even to users with slow internet.

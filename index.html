@@ -3,148 +3,84 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Portfolio Website</title>
+    <title>Your Name | Developer</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-
-    <header id="main-header">
-        <h1>Soumik Mitra</h1>
+    <header>
+        <h1 class="site-title"><a href="#">Soumik Mitra</a></h1>
         <nav>
-            <ul>
-                <li><a href="#about">About Me</a></li>
-                <li><a href="#projects">Projects</a></li>
-                <li><a href="#blog">Tech Blog</a></li>
-                <li><a href="#contact">Contact</a></li>
-            </ul>
+            <a href="#about">About</a>
+            <a href="#now">Now</a>
+            <a href="#projects">Projects</a>
+            <a href="#contact">Contact</a>
         </nav>
     </header>
 
     <main>
         <section id="about">
-            <h2>About Me</h2>
-            <p>Welcome to my professional portfolio. I focus on building scalable web applications.</p>
+            <h2>About me.</h2>
+            <p>I am a Master's student in Computer Science at USC Aiken. I prefer clear code over clever code.</p>
+            <p>My focus is on <strong>scalable web architecture</strong> and <strong>AI integration</strong>. I believe that if you can't explain your code in simple English, you don't understand it well enough.</p>
+        </section>
+
+        <section id="now">
+            <h2>What I'm doing now.</h2>
+            <ul class="clean-list">
+                <li>Working on an <strong>Expense Tracker</strong> application using Node.js.</li>
+                <li>Reading <em>"Hell Yeah or No"</em> by Derek Sivers.</li>
+                <li>Preparing for my graduation in <strong>May 2026</strong>.</li>
+            </ul>
+            <small>Updated: January 20, 2026</small>
+        </section>
+
+        <section id="projects">
+            <h2>Projects.</h2>
             
-            <aside class="quick-stats">
-                <h3>Quick Stats</h3>
-                <ul>
-                    <li>Years Experience: 2</li>
-                    <li>Location: South Carolina</li>
-                    <li>Status: Open for work</li>
-                </ul>
-            </aside>
-        </section>
-
-        <hr> <section id="projects">
-            <h2>Featured Projects</h2>
-            <p>Here are a few applications I have developed. Notice the consistent structure of every article.</p>
-
-            <article class="project-card">
-                <h3>Project Alpha: E-Commerce Dashboard</h3>
-                <img src="placeholder.jpg" alt="Screenshot of dashboard" width="200">
-                <p><strong>Tech Stack:</strong> React, Node.js, MongoDB</p>
-                <p>A full-stack application handling 10,000+ items. I focused on database normalization and API efficiency.</p>
-                <a href="#">View Code</a>
+            <article class="project-item">
+                <h3><a href="#">Expense Tracker App</a></h3>
+                <p>A minimalist finance tool. Built with React, TypeScript, and Docker. It tracks spending without selling user data.</p>
             </article>
 
-            <article class="project-card">
-                <h3>Project Beta: Task Manager</h3>
-                <img src="placeholder.jpg" alt="Screenshot of task manager" width="200">
-                <p><strong>Tech Stack:</strong> Python, Django, PostgreSQL</p>
-                <p>A productivity tool for remote teams. Implements real-time socket updates for collaboration.</p>
-                <a href="#">View Code</a>
+            <article class="project-item">
+                <h3><a href="#">RAG AI Model</a></h3>
+                <p>A local Retrieval-Augmented Generation system. It allows users to chat with their own PDF documents privately.</p>
             </article>
 
-            <article class="project-card">
-                <h3>Project Gamma: Weather API</h3>
-                <img src="placeholder.jpg" alt="Screenshot of weather app" width="200">
-                <p><strong>Tech Stack:</strong> Vanilla JS, OpenWeatherMap API</p>
-                <p>A lightweight front-end application consuming third-party REST APIs to display forecasts.</p>
-                <a href="#">View Code</a>
+            <article class="project-item">
+                <h3><a href="#">Project 3</a></h3>
+                <p>An imaginary project that I created in my subconcious mind. Hehe</p>
             </article>
         </section>
-
-        <hr>
-
-        <section id="blog">
-            <h2>Latest Articles</h2>
-            
-            <div class="blog-layout">
-                <div class="blog-posts">
-                    <article class="blog-post">
-                        <h3>Understanding Semantic HTML</h3>
-                        <small>Posted on Jan 12, 2026</small>
-                        <p>Semantic HTML is the foundation of accessibility and SEO. In this article, we explore why 'div' soup is bad practice...</p>
-                        <a href="#">Read More</a>
-                    </article>
-
-                    <article class="blog-post">
-                        <h3>Why Scalability Matters</h3>
-                        <small>Posted on Jan 05, 2026</small>
-                        <p>When building an application, you must plan for growth. Here is how I structure my databases for future expansion...</p>
-                        <a href="#">Read More</a>
-                    </article>
-                </div>
-
-                <aside class="blog-sidebar">
-                    <h3>Categories</h3>
-                    <ul>
-                        <li><a href="#">Web Dev</a></li>
-                        <li><a href="#">Data Science</a></li>
-                        <li><a href="#">Career</a></li>
-                    </ul>
-                    <h3>Archive</h3>
-                    <ul>
-                        <li><a href="#">2025</a></li>
-                        <li><a href="#">2024</a></li>
-                    </ul>
-                </aside>
-            </div>
-        </section>
-
-        <hr>
 
         <section id="contact">
-            <h2>Get In Touch</h2>
-            <form action="/submit-form" method="POST">
-                
-                <label for="fname">First Name:</label><br>
-                <input type="text" id="fname" name="fname" required><br><br>
+            <h2>Email me.</h2>
+            <p>I reply to all emails, usually within 24 hours.</p>
+            
+            <form action="#" method="POST" class="minimal-form">
+                <label for="name">Name</label>
+                <input type="text" id="name" name="name" required>
 
-                <label for="email">Email Address:</label><br>
-                <input type="email" id="email" name="email" placeholder="name@example.com" required><br><br>
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" required>
 
-                <label for="reason">Reason for Contact:</label><br>
-                <select id="reason" name="reason">
-                    <option value="hire">Hiring Inquiry</option>
-                    <option value="collab">Collaboration</option>
-                    <option value="other">Other</option>
-                </select><br><br>
+                <label for="category">Topic</label>
+                <select id="category" name="category">
+                    <option value="hello">Just saying hello</option>
+                    <option value="work">Hiring inquiry</option>
+                    <option value="project">Project collaboration</option>
+                </select>
 
-                <fieldset>
-                    <legend>Preferred Contact Method:</legend>
-                    <input type="radio" id="contact-email" name="contact-method" value="email" checked>
-                    <label for="contact-email">Email</label><br>
-                    <input type="radio" id="contact-phone" name="contact-method" value="phone">
-                    <label for="contact-phone">Phone</label>
-                </fieldset><br>
+                <label for="message">Message</label>
+                <textarea id="message" name="message" rows="6" required></textarea>
 
-                <label for="message">Message:</label><br>
-                <textarea id="message" name="message" rows="5" cols="30"></textarea><br><br>
-
-                <input type="checkbox" id="subscribe" name="subscribe" value="yes">
-                <label for="subscribe">Subscribe to my newsletter</label><br><br>
-
-                <input type="submit" value="Send Message">
+                <button type="submit">Send Email</button>
             </form>
         </section>
-
     </main>
 
     <footer>
-        <p>&copy; 2026 Soumik Mitra.</p>
-        <nav>
-            <a href="#">GitHub</a> | <a href="#">LinkedIn</a>
-        </nav>
+        <p>&copy; 2026. <a href="https://github.com/Soumik29">View Source</a>.</p>
     </footer>
 
 </body>
