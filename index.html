@@ -4,6 +4,13 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Soumik | Developer</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Bitcount+Single:wght@100..900&display=swap"
+      rel="stylesheet"
+    />
+
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
@@ -112,21 +119,59 @@
 
         <form action="#" method="POST" class="minimal-form">
           <label for="name">Name</label>
-          <input type="text" id="name" name="name" required />
+          <input
+            type="text"
+            id="name"
+            name="name"
+            placeholder="Your name"
+            required
+          />
 
           <label for="email">Email</label>
-          <input type="email" id="email" name="email" required />
+          <input
+            type="email"
+            id="email"
+            name="email"
+            placeholder="email@example.com"
+            required
+          />
 
           <label for="message">Message</label>
-          <textarea id="message" name="message" rows="6" required></textarea>
+          <textarea
+            id="message"
+            name="message"
+            rows="5"
+            placeholder="How can I help you?"
+            required
+          ></textarea>
 
-          <button type="submit">Send Email</button>
+          <button type="submit">Send Message</button>
         </form>
       </section>
     </main>
 
     <footer>
-      <p>&copy; 2026. <a href="https://github.com/Soumik29">View Source</a>.</p>
+      <p>&copy; 2026 Soumik Mitra. Built with "Clear Code".</p>
+      <div class="footer-links">
+        <a href="https://github.com/Soumik29" target="_blank" rel="noopener">
+          <svg
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            style="vertical-align: middle; margin-right: 5px"
+          >
+            <path
+              d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"
+            ></path>
+          </svg>
+          View Source on GitHub
+        </a>
+      </div>
     </footer>
   </body>
 </html>

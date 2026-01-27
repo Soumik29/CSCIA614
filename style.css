@@ -1,129 +1,210 @@
+:root {
+  --bg-color: #0f172a;
+  --bg-card: #1e293b;
+  --primary-color: #38bdf8;
+  --text-main: #f1f5f9;
+  --text-muted: #94a3b8;
+  --border-color: #334155;
+
+  /* Typography */
+  --font-display: "Rubik Storm", system-ui;
+  --font-modern: "Bitcount Single", sans-serif;
+  --font-serif: "Georgia", serif;
+
+  /* Spacing & Sizing */
+  --container-width: 800px;
+  --section-spacing: 5rem;
+  --transition-speed: 0.3s;
+  --border-radius: 12px;
+}
+
 body {
-  font-family: "Georgia", serif;
+  font-family: var(--font-modern);
   line-height: 1.6;
-  color: #111;
-  max-width: 650px;
-  margin: 0 auto;
-  padding: 2rem 1rem;
-  background-color: #fff;
+  color: var(--text-main);
+  background-color: var(--bg-color);
+  margin: 0;
+  display: grid;
+  grid-template-areas:
+    "header"
+    "main"
+    "footer";
+  grid-template-rows: auto 1fr auto;
+  min-height: 100vh;
 }
 
-a {
-  color: #b00;
-  text-decoration: none;
-  border-bottom: 1px solid transparent;
-}
-
-a:hover {
-  border-bottom: 1px solid #b00;
-}
-
-/* 3. HEADER & NAV */
 header {
-  margin-bottom: 3rem;
-  padding-bottom: 1rem;
-  border-bottom: 1px solid #eee;
+  grid-area: header;
+}
+main {
+  grid-area: main;
+}
+footer {
+  grid-area: footer;
 }
 
-.site-title {
-  font-family: "Helvetica", sans-serif; /* Contrast header font */
-  font-size: 1.5rem;
-  margin-bottom: 0.5rem;
+header,
+main,
+footer {
+  width: 90%;
+  max-width: var(--container-width);
+  margin: 0 auto;
 }
 
-.site-title a {
-  color: #000;
-  font-weight: bold;
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 3rem 0;
+  border-bottom: 1px solid var(--border-color);
 }
 
-nav a {
-  margin-right: 15px;
-  font-family: "Helvetica", sans-serif;
-  font-size: 0.9rem;
-  color: #666;
-}
-
-nav a:hover {
-  color: #000;
-}
-
-/* 4. SECTIONS & TYPOGRAPHY */
-section {
-  margin-bottom: 4rem;
+nav {
+  display: flex;
+  gap: 2rem;
 }
 
 h2 {
-  font-family: "Helvetica", sans-serif;
-  font-size: 1.4rem;
-  margin-bottom: 1rem;
-  border-bottom: 2px solid #111;
-  display: inline-block;
-  padding-bottom: 5px;
-}
-
-h3 {
-  font-size: 1.1rem;
-  margin-bottom: 0.2rem;
+  font-family: var(--font-display);
+  font-size: 2rem;
+  color: var(--primary-color);
+  margin-bottom: 2rem;
+  letter-spacing: 1px;
 }
 
 p {
-  margin-bottom: 1.2rem;
-  font-size: 1.1rem; /* Slightly larger text for easier reading */
+  color: var(--text-muted);
+  font-size: 1.1rem;
 }
 
-/* 5. LISTS */
-.clean-list {
-  list-style: circle;
-  padding-left: 20px;
+.site-title a {
+  font-family: var(--font-display);
+  font-size: 2.2rem;
+  color: var(--text-main);
+  text-decoration: none;
+  transition: color var(--transition-speed);
 }
 
-.clean-list li {
-  margin-bottom: 0.5rem;
+.site-title a:hover {
+  color: var(--primary-color);
 }
 
-/* 6. FORM STYLING */
-/* Making form elements look clean and minimal */
+nav a {
+  font-weight: 500;
+  color: var(--text-main);
+  text-decoration: none;
+  transition: all var(--transition-speed);
+  font-size: 0.95rem;
+}
+
+nav a:hover {
+  color: var(--primary-color);
+  transform: translateY(-2px);
+}
+
+.project-item {
+  background: var(--bg-card);
+  padding: 2rem;
+  border-radius: var(--border-radius);
+  border: 1px solid var(--border-color);
+  transition: all var(--transition-speed);
+  margin-bottom: 2rem;
+}
+
+.project-item:hover {
+  transform: translateY(-5px);
+  border-color: var(--primary-color);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+.project-item h3 a {
+  color: var(--text-main);
+  font-family: var(--font-display);
+  font-size: 1.3rem;
+}
+
+.minimal-form {
+  display: flex;
+  flex-direction: column;
+  max-width: 550px;
+  background: var(--bg-card);
+  padding: 2.5rem;
+  border-radius: var(--border-radius);
+  border: 1px solid var(--border-color);
+}
+
 .minimal-form label {
-  display: block;
-  margin-top: 1rem;
-  font-family: "Helvetica", sans-serif;
-  font-weight: bold;
-  font-size: 0.85rem;
-  color: #333;
+  font-weight: 600;
+  font-size: 0.8rem;
+  font-family: var(--font-modern);
+  color: var(--primary-color);
+  margin-bottom: 0.6rem;
+  text-transform: uppercase;
 }
 
 .minimal-form input,
-.minimal-form select,
 .minimal-form textarea {
-  width: 100%;
-  padding: 10px;
-  margin-top: 5px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  font-family: inherit;
-  font-size: 1rem;
+  background: var(--bg-color);
+  border: 1px solid var(--border-color);
+  color: var(--text-main);
+  padding: 14px;
+  margin-bottom: 1.5rem;
+  border-radius: 8px;
+  font-family: var(--font-modern);
+}
+
+.minimal-form input:focus,
+.minimal-form textarea:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 4px rgba(56, 189, 248, 0.1);
 }
 
 .minimal-form button {
-  margin-top: 1.5rem;
-  background-color: #b00;
-  color: white;
+  align-self: flex-start;
+  background-color: var(--primary-color);
+  color: var(--bg-color);
+  font-family: var(--font-modern);
+  font-weight: 700;
+  padding: 14px 40px;
   border: none;
-  padding: 10px 20px;
-  font-size: 1rem;
+  border-radius: 8px;
   cursor: pointer;
-  border-radius: 4px;
+  transition: all var(--transition-speed);
 }
 
 .minimal-form button:hover {
-  background-color: #800;
+  background-color: var(--primary-hover);
+  transform: scale(1.05);
 }
 
-/* 7. FOOTER */
+@media (max-width: 768px) {
+  header {
+    flex-direction: column;
+    gap: 2rem;
+  }
+  :root {
+    --section-spacing: 3.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  :root {
+    --container-width: 100%;
+  }
+  body {
+    font-size: 16px;
+  }
+  nav {
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1rem;
+  }
+}
+
 footer {
-  border-top: 1px solid #eee;
-  padding-top: 2rem;
-  color: #888;
-  font-size: 0.9rem;
+  padding: 4rem 0;
+  border-top: 1px solid var(--border-color);
   text-align: center;
+  color: var(--text-muted);
 }
