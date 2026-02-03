@@ -71,4 +71,4 @@ State Encapsulation :
   Memory Managment:
 - Your game must have a "Game Over" and "Restart" state, and there is no memory leak. If you added addEventListener to the window, you must removeEventListener at the end of the Game.  
   Security:
-- At the end of the game, allow the user to input their name for a "High Score" display. You must process this name safely. If I enter <img src=x onerror=alert(1)> as my name, the alert could not pop up.
+- At the end of the game, allow the user to input their name for a "High Score" display. You must process this name safely. If I enter ```html<img src=x onerror=alert(1)>``` as my name, the alert could not pop up.
