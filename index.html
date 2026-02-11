@@ -1,177 +1,279 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Soumik | Developer</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Bitcount+Single:wght@100..900&display=swap"
-      rel="stylesheet"
-    />
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reflex Grid - Final Fix</title>
+    <style>
+        body { font-family: 'Segoe UI', sans-serif; background: #222; color: #fff; text-align: center; display: flex; flex-direction: column; align-items: center; min-height: 100vh; margin: 0; user-select: none; }
+        h1 { margin-top: 20px; }
+        
+        #game-container { position: relative; width: 320px; height: 320px; margin: 20px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; padding: 10px; background: #333; border-radius: 8px; }
+        .tile { background: #444; border-radius: 8px; cursor: pointer; transition: transform 0.1s; border: 2px solid #444; }
+        
+        /* Active Target (Blue) */
+        .tile.active { background: #00d2ff; border-color: #fff; box-shadow: 0 0 15px #00d2ff; }
+        
+        /* Success Hit (Green) */
+        .tile.hit { background: #55ff55 !important; border-color: #fff; transform: scale(0.9); box-shadow: 0 0 15px #55ff55; }
+        
+        #ui-layer { margin-bottom: 10px; }
+        button { padding: 10px 20px; font-size: 16px; cursor: pointer; background: #00d2ff; border: none; border-radius: 4px; font-weight: bold; color: #000; transition: background 0.2s; }
+        button:hover { background: #33eaff; }
+        button:disabled { background: #555; cursor: not-allowed; color: #888; }
+        
+        #modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); display: none; flex-direction: column; justify-content: center; align-items: center; z-index: 100; }
+        #modal h2 { margin: 0 0 10px 0; color: #ff5555; }
+        #modal input { padding: 12px; font-size: 16px; margin: 15px 0; border: none; border-radius: 4px; width: 200px; text-align: center; }
+        
+        #leaderboard { width: 320px; text-align: left; background: #2a2a2a; padding: 15px; border-radius: 8px; margin-top: 10px; box-sizing: border-box; }
+        .entry { border-bottom: 1px solid #444; padding: 8px 0; display: flex; justify-content: space-between; font-size: 14px; }
+        .entry span:first-child { color: #00d2ff; font-weight: bold; max-width: 200px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    </style>
+</head>
+<body>
 
-    <link rel="stylesheet" href="style.css" />
-  </head>
-  <body>
-    <header>
-      <h1 class="site-title"><a href="#">Soumik Mitra</a></h1>
-      <nav>
-        <a href="#about">About</a>
-        <a href="#now">Now</a>
-        <a href="#projects">Projects</a>
-        <a href="#contact">Contact</a>
-      </nav>
-    </header>
+    <h1>Reflex Grid</h1>
+    
+    <div id="ui-layer">
+        <h3>Score: <span id="score-display">0</span></h3>
+        <button id="start-btn">Start Game</button>
+        <p><small style="color: #888;">Press 'Escape' to stop.</small></p>
+    </div>
 
-    <main>
-      <section id="about">
-        <h2>Who am I?</h2>
-        <p>
-          I am a Master's student in Computer Science at USC Aiken. I prefer
-          clear code over clever code.
-        </p>
-        <p>
-          My focus is on <strong>scalable web architecture</strong> and
-          <strong>AI integration</strong>. I believe that if you can't explain
-          your code in simple English, you don't understand it well enough.
-        </p>
-      </section>
+    <div id="game-container"></div>
 
-      <section id="now">
-        <h2>What I'm doing now.</h2>
-        <ul class="clean-list">
-          <li>
-            Lorem Ipsum is simply dummy text of the printing and typesetting
-            industry. Lorem Ipsum has been the industry's standard dummy text
-            ever since the 1500s.
-          </li>
-          <li>
-            It has <em>survived</em> not only five centuries, but also the leap
-            into electronic typesetting, remaining essentially unchanged
-          </li>
-          <li>
-            It was popularised in the 1960s with the release of Letraset sheets
-            containing Lorem Ipsum passages, and more recently with desktop
-            publishing software like Aldus PageMaker including versions of
-            <strong>Lorem Ipsum.</strong>
-          </li>
-        </ul>
-        <small>Updated: January 20, 2026</small>
-      </section>
+    <div id="leaderboard">
+        <h3>High Scores</h3>
+        <div id="score-list"></div>
+    </div>
 
-      <section id="projects">
-        <h2>Projects.</h2>
+    <div id="modal">
+        <h2>Game Over!</h2>
+        <p style="font-size: 1.2em;">Final Score: <span id="final-score">0</span></p>
+        <input type="text" id="player-name" placeholder="Enter Name" maxlength="15">
+        <button id="save-score-btn">Save Score</button>
+        <button id="cancel-btn" style="background: transparent; color: #aaa; margin-top: 10px;">Close</button>
+    </div>
 
-        <article class="project-item">
-          <h3><a href="#">Project 1</a></h3>
-          <p>
-            Lorem Ipsum is simply dummy text of the printing and typesetting
-            industry. Lorem Ipsum has been the industry's standard dummy text
-            ever since the 1500s, when an unknown printer took a galley of type
-            and scrambled it to make a type specimen book. It has survived not
-            only five centuries, but also the leap into electronic typesetting,
-            remaining essentially unchanged. It was popularised in the 1960s
-            with the release of Letraset sheets containing Lorem Ipsum passages,
-            and more recently with desktop publishing software like Aldus
-            PageMaker including versions of Lorem Ipsum.
-          </p>
-        </article>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
 
-        <article class="project-item">
-          <h3><a href="#">Project 2</a></h3>
-          <p>
-            Contrary to popular belief, Lorem Ipsum is not simply random text.
-            It has roots in a piece of classical Latin literature from 45 BC,
-            making it over 2000 years old. Richard McClintock, a Latin professor
-            at Hampden-Sydney College in Virginia, looked up one of the more
-            obscure Latin words, consectetur, from a Lorem Ipsum passage, and
-            going through the cites of the word in classical literature,
-            discovered the undoubtable source. Lorem Ipsum comes from sections
-            1.10.32 and 1.10.33 of "de Finibus Bonorum et Malorum" (The Extremes
-            of Good and Evil) by Cicero, written in 45 BC. This book is a
-            treatise on the theory of ethics, very popular during the
-            Renaissance. The first line of Lorem Ipsum, "Lorem ipsum dolor sit
-            amet..", comes from a line in section 1.10.32.
-          </p>
-        </article>
+    /**
+     * MODULE PATTERN (Closure)
+     * Encapsulates state so 'score' and 'timers' are not globally accessible.
+     */
+    const GameModule = (function() {
+        
+        // --- PRIVATE STATE ---
+        let score = 0;
+        let finalScore = 0; // Locks the score for the display modal
+        let isPlaying = false;
+        let activeTileIndex = null;
+        
+        // Timers
+        let gameLoopTimer = null; // Controls the "too slow" refresh
+        let gameEndTimer = null;  // Controls the 10s duration
+        let visualResetTimer = null; // Controls green flash duration
 
-        <article class="project-item">
-          <h3><a href="#">Project 3</a></h3>
-          <p>
-            It is a long established fact that a reader will be distracted by
-            the readable content of a page when looking at its layout. The point
-            of using Lorem Ipsum is that it has a more-or-less normal
-            distribution of letters, as opposed to using 'Content here, content
-            here', making it look like readable English. Many desktop publishing
-            packages and web page editors now use Lorem Ipsum as their default
-            model text, and a search for 'lorem ipsum' will uncover many web
-            sites still in their infancy. Various versions have evolved over the
-            years, sometimes by accident, sometimes on purpose (injected humour
-            and the like).
-          </p>
-        </article>
-      </section>
+        // Config
+        const GAME_DURATION = 10000;
 
-      <section id="contact">
-        <h2>Email me.</h2>
-        <p>I reply to all emails, usually within 24 hours.</p>
+        // DOM Cache
+        const grid = document.getElementById('game-container');
+        const scoreDisplay = document.getElementById('score-display');
+        const startBtn = document.getElementById('start-btn');
+        const modal = document.getElementById('modal');
+        const finalScoreDisplay = document.getElementById('final-score');
+        const saveBtn = document.getElementById('save-score-btn');
+        const cancelBtn = document.getElementById('cancel-btn');
+        const nameInput = document.getElementById('player-name');
+        const scoreList = document.getElementById('score-list');
 
-        <form action="#" method="POST" class="minimal-form">
-          <label for="name">Name</label>
-          <input
-            type="text"
-            id="name"
-            name="name"
-            placeholder="Your name"
-            required
-          />
+        // --- PRIVATE HELPERS ---
 
-          <label for="email">Email</label>
-          <input
-            type="email"
-            id="email"
-            name="email"
-            placeholder="email@example.com"
-            required
-          />
+        const createGrid = () => {
+            grid.innerHTML = '';
+            for(let i = 0; i < 9; i++) {
+                let tile = document.createElement('div');
+                tile.classList.add('tile');
+                tile.dataset.index = i; // Store index in DOM
+                grid.appendChild(tile);
+            }
+        };
 
-          <label for="message">Message</label>
-          <textarea
-            id="message"
-            name="message"
-            rows="5"
-            placeholder="How can I help you?"
-            required
-          ></textarea>
+        const updateScoreUI = () => {
+            scoreDisplay.textContent = score;
+        };
 
-          <button type="submit">Send Message</button>
-        </form>
-      </section>
-    </main>
+        const clearTimers = () => {
+            clearTimeout(gameLoopTimer);
+            clearTimeout(gameEndTimer);
+            clearTimeout(visualResetTimer);
+        };
 
-    <footer>
-      <p>&copy; 2026 Soumik Mitra. Built with "Clear Code".</p>
-      <div class="footer-links">
-        <a href="https://github.com/Soumik29" target="_blank" rel="noopener">
-          <svg
-            width="16"
-            height="16"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            style="vertical-align: middle; margin-right: 5px"
-          >
-            <path
-              d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"
-            ></path>
-          </svg>
-          View Source on GitHub
-        </a>
-      </div>
-    </footer>
-  </body>
+        // Core Game Logic: Moves the blue square
+        const activateNextTile = () => {
+            if (!isPlaying) return;
+
+            // Reset UI for all tiles
+            const tiles = document.querySelectorAll('.tile');
+            tiles.forEach(t => t.classList.remove('active', 'hit'));
+
+            // Logic to pick a random tile (different from current)
+            let newIndex = Math.floor(Math.random() * 9);
+            // If we have more than 1 tile, ensure we don't pick the same one twice
+            if (tiles.length > 1) {
+                while (newIndex === activeTileIndex) {
+                    newIndex = Math.floor(Math.random() * 9);
+                }
+            }
+            
+            activeTileIndex = newIndex;
+            tiles[activeTileIndex].classList.add('active');
+
+            // Set "Too Slow" timer - moves tile if you don't click fast enough
+            // Speed increases as score increases (capped at 400ms)
+            const speed = Math.max(400, 1000 - (score * 50));
+            gameLoopTimer = setTimeout(activateNextTile, speed);
+        };
+
+        // --- PUBLIC CONTROLLER CLASS ---
+        class GameController {
+            constructor() {
+                // Binding 'this' explicitly for event handlers
+                this.startGame = this.startGame.bind(this);
+                this.handleGridClick = this.handleGridClick.bind(this);
+                this.handleGlobalKeys = this.handleGlobalKeys.bind(this);
+                this.endGame = this.endGame.bind(this);
+                this.saveScore = this.saveScore.bind(this);
+                this.closeModal = this.closeModal.bind(this);
+            }
+
+            init() {
+                createGrid();
+                startBtn.addEventListener('click', this.startGame);
+                saveBtn.addEventListener('click', this.saveScore);
+                cancelBtn.addEventListener('click', this.closeModal);
+            }
+
+            startGame() {
+                if (isPlaying) return;
+
+                // 1. Reset State
+                score = 0;
+                activeTileIndex = null;
+                isPlaying = true;
+                updateScoreUI();
+                modal.style.display = 'none';
+                startBtn.disabled = true;
+
+                // 2. Start Game Loop
+                activateNextTile();
+
+                // 3. Set Game Over Timer
+                gameEndTimer = setTimeout(this.endGame, GAME_DURATION);
+
+                // 4. Attach Listeners
+                // EVENT DELEGATION: We listen on the grid, not the tiles
+                grid.addEventListener('mousedown', this.handleGridClick);
+                // MEMORY MANAGEMENT: Global listener added
+                window.addEventListener('keydown', this.handleGlobalKeys);
+            }
+
+            endGame() {
+                isPlaying = false;
+                finalScore = score; // Lock score for display
+                
+                // Memory Management: Remove listeners and clear timers
+                this.cleanup();
+
+                // Show UI
+                finalScoreDisplay.textContent = finalScore;
+                modal.style.display = 'flex';
+                startBtn.disabled = false;
+            }
+
+            cleanup() {
+                // Remove listeners
+                grid.removeEventListener('mousedown', this.handleGridClick);
+                window.removeEventListener('keydown', this.handleGlobalKeys);
+                
+                // Stop all timers
+                clearTimers();
+            }
+
+            handleGridClick(e) {
+                if (!isPlaying) return;
+
+                // Check if the clicked element (or its parent) is a tile
+                const tile = e.target.closest('.tile');
+                if (!tile) return; // Clicked grid gap, ignore
+
+                const index = parseInt(tile.dataset.index);
+
+                // Logic: Did we hit the active tile?
+                if (index === activeTileIndex) {
+                    // Valid Hit
+                    score++;
+                    updateScoreUI();
+
+                    // Prevent double-clicking:
+                    activeTileIndex = null; 
+
+                    // Visual Feedback
+                    tile.classList.remove('active');
+                    tile.classList.add('hit'); // Green flash
+
+                    // Reset the "Too Slow" timer immediately
+                    clearTimeout(gameLoopTimer);
+
+                    // Delay slightly before next tile appears so user sees the green
+                    visualResetTimer = setTimeout(() => {
+                        if (isPlaying) activateNextTile();
+                    }, 150);
+                }
+            }
+
+            handleGlobalKeys(e) {
+                if (e.key === 'Escape') {
+                    this.endGame();
+                }
+            }
+
+            saveScore() {
+                const name = nameInput.value.trim() || "Anonymous";
+                
+                // SECURITY: Create elements safely to prevent XSS
+                const entry = document.createElement('div');
+                entry.className = 'entry';
+                
+                const nameSpan = document.createElement('span');
+                nameSpan.textContent = name; // SAFE: treats HTML as text
+                
+                const scoreSpan = document.createElement('span');
+                scoreSpan.textContent = finalScore;
+
+                entry.appendChild(nameSpan);
+                entry.appendChild(scoreSpan);
+                scoreList.prepend(entry);
+
+                this.closeModal();
+            }
+
+            closeModal() {
+                modal.style.display = 'none';
+                nameInput.value = '';
+            }
+        }
+
+        return new GameController();
+    })();
+
+    // Initialize Game
+    GameModule.init();
+
+});
+</script>
+</body>
 </html>

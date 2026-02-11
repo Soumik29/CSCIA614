@@ -1,0 +1,108 @@
+/* Task list styles */
+.task-list {
+  list-style: none;
+  padding: 0;
+}
+
+.task-list li {
+  padding: 12px 20px;
+  margin: 8px 0;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 16px;
+  font-weight: 500;
+}
+
+/* Cool style - Blue theme */
+.cool {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border: 2px solid #5a67d8;
+}
+
+.cool:hover {
+  transform: scale(1.02);
+  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+}
+
+/* Hot style - Red/Orange theme */
+.hot {
+  background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+  color: white;
+  border: 2px solid #e53e3e;
+}
+
+.hot:hover {
+  transform: scale(1.02);
+  box-shadow: 0 4px 15px rgba(245, 87, 108, 0.4);
+}
+
+/* Warm style - Yellow/Orange theme */
+.warm {
+  background: linear-gradient(135deg, #f6d365 0%, #fda085 100%);
+  color: #333;
+  border: 2px solid #ed8936;
+}
+
+.warm:hover {
+  transform: scale(1.02);
+  box-shadow: 0 4px 15px rgba(253, 160, 133, 0.4);
+}
+
+/* Complete style - Green theme */
+.complete {
+  background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+  color: white;
+  border: 2px solid #38a169;
+  text-decoration: line-through;
+}
+
+.complete:hover {
+  transform: scale(1.02);
+  box-shadow: 0 4px 15px rgba(56, 239, 125, 0.4);
+}
+
+/* Button styles */
+.counter-button {
+  background: #4299e1;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  margin: 5px;
+  font-weight: bold;
+  transition: background 0.2s;
+}
+
+.counter-button:hover {
+  background: #3182ce;
+}
+
+button {
+  padding: 10px 20px;
+  margin: 5px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: all 0.2s;
+}
+
+button:hover {
+  opacity: 0.9;
+}
+
+input[type="text"] {
+  padding: 10px 15px;
+  margin: 5px;
+  border: 2px solid #e2e8f0;
+  border-radius: 6px;
+  font-size: 14px;
+}
+
+input[type="text"]:focus {
+  outline: none;
+  border-color: #4299e1;
+}
