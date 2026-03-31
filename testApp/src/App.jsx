@@ -1,19 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
-import {
-  addDoc,
-  collection,
-  doc,
-  getDocs,
-  onSnapshot,
-  orderBy,
-  query,
-  serverTimestamp,
-  updateDoc,
-  where,
-  writeBatch,
-} from "firebase/firestore";
+import { onAuthStateChanged, signInWithPopup, signOut } from "firebase/auth";
 import "./TaskStyles.css";
-import { db } from "./firebase";
+import { auth, googleProvider } from "./firebase";
 
 function nextStyle(style) {
   if (style === "cool") return "complete";
@@ -21,97 +9,247 @@ function nextStyle(style) {
   return "cool";
 }
 
+async function requestJson(path, options = {}) {
+  const headers = { ...(options.headers ?? {}) };
+
+  if (options.body && !headers["Content-Type"]) {
+    headers["Content-Type"] = "application/json";
+  }
+
+  const response = await fetch(path, {
+    ...options,
+    headers,
+  });
+
+  const data = await response.json().catch(() => ({}));
+
+  if (!response.ok) {
+    throw new Error(data.message || "Request failed.");
+  }
+
+  return data;
+}
+
 function App() {
   const [taskList, setTaskList] = useState([]);
   const [input, setInput] = useState("");
   const [sortMode, setSortMode] = useState("importance");
   const [createdBy, setCreatedBy] = useState("soumik");
+  const [user, setUser] = useState(null);
+  const [authError, setAuthError] = useState("");
+  const [requestError, setRequestError] = useState("");
+  const [authReady, setAuthReady] = useState(false);
+  const [isLoadingList, setIsLoadingList] = useState(false);
+  const [isMutating, setIsMutating] = useState(false);
+
+  const isSignedIn = Boolean(user);
+  const displayName = user?.displayName || user?.email || "Unknown user";
+  const createdByValue = isSignedIn ? displayName : createdBy;
 
   useEffect(() => {
-    const q = query(
-      collection(db, "shoppingList"),
-      orderBy("createdAt", "asc"),
-    );
-    const unsubscribe = onSnapshot(q, (snapshot) => {
-      console.log("Snapshot size:", snapshot.size);
-      const items = snapshot.docs.map((d) => ({
-        id: d.id,
-        ...d.data(),
-      }));
-      setTaskList(items);
+    const unsubscribe = onAuthStateChanged(auth, (nextUser) => {
+      setUser(nextUser);
+      setAuthError("");
+      setRequestError("");
+      setAuthReady(true);
+
+      if (nextUser) {
+        const name = nextUser.displayName || nextUser.email || "Unknown user";
+        setCreatedBy(name);
+      } else {
+        setCreatedBy("");
+        setTaskList([]);
+      }
     });
+
     return () => unsubscribe();
   }, []);
+
+  async function loadTasks() {
+    setIsLoadingList(true);
+
+    try {
+      const data = await requestJson("/api/listItems");
+      setTaskList(data.items ?? []);
+      setRequestError("");
+    } catch (err) {
+      console.error("LOAD FAILED:", err);
+      setRequestError(err.message || "Unable to load items.");
+      setTaskList([]);
+    } finally {
+      setIsLoadingList(false);
+    }
+  }
+
+  useEffect(() => {
+    if (!isSignedIn) {
+      return;
+    }
+
+    let cancelled = false;
+
+    async function syncTasks() {
+      setIsLoadingList(true);
+
+      try {
+        const data = await requestJson("/api/listItems");
+        if (cancelled) {
+          return;
+        }
+
+        setTaskList(data.items ?? []);
+        setRequestError("");
+      } catch (err) {
+        console.error("LOAD FAILED:", err);
+        if (cancelled) {
+          return;
+        }
+
+        setRequestError(err.message || "Unable to load items.");
+        setTaskList([]);
+      } finally {
+        if (!cancelled) {
+          setIsLoadingList(false);
+        }
+      }
+    }
+
+    syncTasks();
+
+    return () => {
+      cancelled = true;
+    };
+  }, [isSignedIn]);
 
   const sortedTasks = useMemo(() => {
     const items = [...taskList];
 
     if (sortMode === "importance") {
-      const pr = { hot: 3, cool: 2, complete: 1 };
-      items.sort((a, b) => (pr[b.style] ?? 0) - (pr[a.style] ?? 0));
+      const priority = { hot: 3, cool: 2, complete: 1 };
+      items.sort((a, b) => (priority[b.style] ?? 0) - (priority[a.style] ?? 0));
     } else if (sortMode === "time") {
-      items.sort((a, b) => {
-        const at = a.createdAt?.toMillis?.() ?? 0;
-        const bt = b.createdAt?.toMillis?.() ?? 0;
-        return at - bt;
-      });
+      items.sort((a, b) => (a.createdAt ?? 0) - (b.createdAt ?? 0));
     } else if (sortMode === "user") {
       items.sort((a, b) =>
         (a.created_by ?? "").localeCompare(b.created_by ?? ""),
       );
     }
+
     return items;
   }, [taskList, sortMode]);
-  async function addTask(e) {
 
-    // setInput("");
+  async function runMutation(work) {
+    setIsMutating(true);
+
+    try {
+      await work();
+      await loadTasks();
+      setRequestError("");
+    } catch (err) {
+      console.error("REQUEST FAILED:", err);
+      setRequestError(err.message || "Unable to complete request.");
+    } finally {
+      setIsMutating(false);
+    }
+  }
+
+  async function handleLogin() {
+    setAuthError("");
+
+    try {
+      await signInWithPopup(auth, googleProvider);
+    } catch (err) {
+      setAuthError(err?.message || "Sign in failed");
+    }
+  }
+
+  async function handleLogout() {
+    setAuthError("");
+
+    try {
+      await signOut(auth);
+    } catch (err) {
+      setAuthError(err?.message || "Sign out failed");
+    }
+  }
+
+  async function addTask(e) {
     e.preventDefault();
+
     const content = input.trim();
     if (!content) return;
 
-    try {
-      const ref = await addDoc(collection(db, "shoppingList"), {
-        content,
-        style: "cool",
-        created_by: createdBy,
-        createdAt: serverTimestamp(),
+    const author = createdByValue.trim() || "anonymous";
+
+    await runMutation(async () => {
+      await requestJson("/api/addItem", {
+        method: "POST",
+        body: JSON.stringify({
+          content,
+          createdBy: author,
+        }),
       });
 
-      console.log("Added doc id:", ref.id);
       setInput("");
-    } catch (err) {
-      console.error("ADD FAILED:", err);
-      alert(err.message);
-    }
+    });
   }
 
   async function changeStyle(task) {
     const newStyle = nextStyle(task.style);
 
-    setTaskList((prev) =>
-      prev.map((t) => (t.id === task.id ? { ...t, style: newStyle } : t)),
-    );
-
-    await updateDoc(doc(db, "shoppingList", task.id), { style: newStyle });
+    await runMutation(async () => {
+      await requestJson("/api/updateItemStyle", {
+        method: "POST",
+        body: JSON.stringify({
+          id: task.id,
+          style: newStyle,
+        }),
+      });
+    });
   }
 
   async function deleteCompleted() {
-    const q = query(
-      collection(db, "shoppingList"),
-      where("style", "==", "complete"),
-    );
-    const snap = await getDocs(q);
-
-    const batch = writeBatch(db);
-    snap.forEach((d) => batch.delete(d.ref));
-    await batch.commit();
+    await runMutation(async () => {
+      await requestJson("/api/deleteCompleted", {
+        method: "POST",
+      });
+    });
   }
 
   async function clearAll() {
-    const snap = await getDocs(collection(db, "shoppingList"));
-    const batch = writeBatch(db);
-    snap.forEach((d) => batch.delete(d.ref));
-    await batch.commit();
+    await runMutation(async () => {
+      await requestJson("/api/clearList", {
+        method: "POST",
+      });
+    });
+  }
+
+  if (!authReady) {
+    return (
+      <div style={{ display: "flex", justifyContent: "center", marginTop: 80 }}>
+        <div style={{ width: 420 }}>
+          <h1>Shopping List</h1>
+          <div style={{ marginTop: 8, opacity: 0.7 }}>Checking sign-in...</div>
+        </div>
+      </div>
+    );
+  }
+
+  if (!isSignedIn) {
+    return (
+      <div style={{ display: "flex", justifyContent: "center", marginTop: 80 }}>
+        <div style={{ width: 420 }}>
+          <h1>Shopping List</h1>
+          <div style={{ marginTop: 8, marginBottom: 16 }}>
+            Please sign in with Google to continue.
+          </div>
+          <button onClick={handleLogin}>Sign in with Google</button>
+          {authError ? (
+            <div style={{ color: "crimson", marginTop: 12 }}>{authError}</div>
+          ) : null}
+        </div>
+      </div>
+    );
   }
 
   return (
@@ -119,18 +257,51 @@ function App() {
       <div style={{ width: 520 }}>
         <h1>Shopping List</h1>
 
-        {/* User field */}
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+            gap: 12,
+            marginBottom: 12,
+          }}
+        >
+          <div>
+            <div style={{ fontWeight: 600 }}>Account</div>
+            <div style={{ fontSize: 12, opacity: 0.7 }}>
+              {isSignedIn ? `Signed in as ${displayName}` : "Not signed in"}
+            </div>
+          </div>
+          {isSignedIn ? (
+            <button onClick={handleLogout}>Sign out</button>
+          ) : (
+            <button onClick={handleLogin}>Sign in with Google</button>
+          )}
+        </div>
+
+        {authError ? (
+          <div style={{ color: "crimson", marginBottom: 8 }}>{authError}</div>
+        ) : null}
+
+        {requestError ? (
+          <div style={{ color: "crimson", marginBottom: 8 }}>{requestError}</div>
+        ) : null}
+
         <div style={{ display: "flex", gap: 8, marginBottom: 12 }}>
           <input
             type="text"
-            value={createdBy}
+            value={createdByValue}
             onChange={(e) => setCreatedBy(e.target.value)}
-            placeholder="Your name (created_by)"
+            placeholder={
+              isSignedIn ? "Signed in with Google" : "Your name (created_by)"
+            }
+            disabled={isSignedIn}
             style={{ flex: 1 }}
           />
           <select
             value={sortMode}
             onChange={(e) => setSortMode(e.target.value)}
+            disabled={isLoadingList || isMutating}
           >
             <option value="importance">Sort: importance</option>
             <option value="time">Sort: time</option>
@@ -138,7 +309,6 @@ function App() {
           </select>
         </div>
 
-        {/* Add item */}
         <form onSubmit={addTask} style={{ display: "flex", gap: 8 }}>
           <input
             type="text"
@@ -146,19 +316,28 @@ function App() {
             value={input}
             onChange={(e) => setInput(e.target.value)}
             style={{ flex: 1 }}
+            disabled={isMutating}
           />
-          <button type="submit">Add</button>
+          <button type="submit" disabled={isMutating}>
+            Add
+          </button>
         </form>
 
-        {/* List */}
+        {isLoadingList ? (
+          <div style={{ marginTop: 16, opacity: 0.7 }}>Loading items...</div>
+        ) : null}
+
         <ul className="task-list" style={{ marginTop: 16 }}>
           {sortedTasks.map((task) => (
             <li
               key={task.id}
               className={task.style}
               onClick={() => changeStyle(task)}
-              title="Click to cycle: cool → complete → hot → cool"
-              style={{ cursor: "pointer" }}
+              title="Click to cycle: cool -> complete -> hot -> cool"
+              style={{
+                cursor: isMutating ? "wait" : "pointer",
+                opacity: isMutating ? 0.8 : 1,
+              }}
             >
               {task.content}{" "}
               <span style={{ fontSize: 12, opacity: 0.7 }}>
@@ -168,10 +347,13 @@ function App() {
           ))}
         </ul>
 
-        {/* Actions */}
         <div style={{ display: "flex", gap: 8, marginTop: 12 }}>
-          <button onClick={deleteCompleted}>Delete Completed</button>
-          <button onClick={clearAll}>Clear All</button>
+          <button onClick={deleteCompleted} disabled={isMutating}>
+            Delete Completed
+          </button>
+          <button onClick={clearAll} disabled={isMutating}>
+            Clear All
+          </button>
         </div>
       </div>
     </div>

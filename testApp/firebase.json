@@ -1,4 +1,7 @@
 {
+  "functions": {
+    "source": "functions"
+  },
   "hosting": {
     "public": "dist",
     "ignore": [
@@ -8,8 +11,43 @@
     ],
     "rewrites": [
       {
+        "source": "/api/listItems",
+        "function": {
+          "functionId": "listItems",
+          "region": "us-east1"
+        }
+      },
+      {
+        "source": "/api/addItem",
+        "function": {
+          "functionId": "addItem",
+          "region": "us-east1"
+        }
+      },
+      {
+        "source": "/api/updateItemStyle",
+        "function": {
+          "functionId": "updateItemStyle",
+          "region": "us-east1"
+        }
+      },
+      {
+        "source": "/api/deleteCompleted",
+        "function": {
+          "functionId": "deleteCompleted",
+          "region": "us-east1"
+        }
+      },
+      {
+        "source": "/api/clearList",
+        "function": {
+          "functionId": "clearList",
+          "region": "us-east1"
+        }
+      },
+      {
         "source": "**",
-        "destination": "dist/index.html"
+        "destination": "/index.html"
       }
     ]
   }

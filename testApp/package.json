@@ -9,8 +9,10 @@
     "build": "vite build",
     "lint": "eslint .",
     "preview": "vite preview",
+    "emulators": "firebase emulators:start --only functions,hosting",
     "predeploy": "npm run build",
-    "deploy": "gh-pages -d dist"
+    "deploy": "firebase deploy --only functions,hosting",
+    "deploy:ghpages": "gh-pages -d dist"
   },
   "dependencies": {
     "firebase": "^12.9.0",
