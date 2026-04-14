@@ -1,7 +1,0 @@
-[extend]
-useDefault = true
-
-[allowList]
-commits = [
-    "3da71679dbbd60f1ca6831e2ff6b24c0153f307d",
-    "4b886f9b6b5ad756261d9c85abc4b026cc916168"]
