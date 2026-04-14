@@ -1,0 +1,39 @@
+name: Check for index.html
+
+on:
+  push:
+    branches: [main, master, develop]
+  pull_request:
+    branches: [main, master, develop]
+  workflow_dispatch:
+
+jobs:
+  check-files:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Verify index.html exists
+        shell: bash
+        run: |
+          paths=(
+            "index.html"
+            "testApp/index.html"
+            "testApp/public/index.html"
+          )
+
+          found=false
+
+          for path in "${paths[@]}"; do
+            if [ -f "$path" ]; then
+              echo "Found $path"
+              found=true
+            fi
+          done
+
+          if [ "$found" = false ]; then
+            echo "Error: index.html was not found in any expected location."
+            exit 1
+          fi
